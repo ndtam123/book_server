@@ -84,7 +84,9 @@ const UserSchema = new Schema(
         },
         products: [ProductItem],
         totalItems: { type: Number, default: 0 },
-        tokens: [{ type: Object }]
+        // token: {
+        //     type: String
+        // }
     },
     { timestamps: true }
 )

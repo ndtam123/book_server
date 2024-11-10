@@ -41,21 +41,21 @@ export const login = async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id, isAdmin: user.isAdmin }, process.env.JWT_KEY, { expiresIn: '30d' })
-        const newToken = {
-            token,
-            signedAt: Date.now().toString()
-        }
+        // const newToken = {
+        //     token,
+        //     signedAt: Date.now().toString()
+        // }
 
-        let oldTokens = user.tokens || []
-        if (oldTokens.length) {
-            oldTokens = oldTokens.filter(t => {
-                const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000
-                if (timeDiff < 86_400) {
-                    return t
-                }
-            })
-        }
-        const updatedUser = await User.findOneAndUpdate({ email }, { $push: { tokens: newToken } }, { new: true })
+        // let oldTokens = user.tokens || []
+        // if (oldTokens.length) {
+        //     oldTokens = oldTokens.filter(t => {
+        //         const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000
+        //         if (timeDiff < 86_400) {
+        //             return t
+        //         }
+        //     })
+        // }
+        // const updatedUser = await User.findOneAndUpdate({ email }, { $push: { token} }, { new: true })
 
         const userInfo = { ...updatedUser._doc }
         delete userInfo.password
@@ -76,8 +76,8 @@ export const logout = async (req, res) => {
             return res.status(401).json({ success: false, message: 'Token không hợp lệ!' })
         }
 
-        const tokens = req.user.tokens
-        const newTokens = tokens.filter(t => t.token !== token)
+        // const tokens = req.user.tokens
+        // const newTokens = tokens.filter(t => t.token !== token)
 
         await User.findByIdAndUpdate(req.user._id, { tokens: newTokens })
         res.status(200).json({ success: true, message: 'Đăng xuất thành công!' })
