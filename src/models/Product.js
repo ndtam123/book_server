@@ -12,8 +12,7 @@ const ProductSchema = new Schema(
         },
         price: {
             type: Number,
-            required: true,
-
+            required: true
         },
         description: {
             type: String,
@@ -31,14 +30,10 @@ const ProductSchema = new Schema(
             type: [String],
             required: true
         },
-        author: {
-            type: String,
-            required: true
-        },
         sold: {
             type: Number,
             default: 0
-        },
+        }
     },
     { timestamps: true }
 )
