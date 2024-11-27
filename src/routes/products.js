@@ -21,7 +21,7 @@ import { validateFlashSaleProduct } from '../middleware/joiMiddleWare.js'
 const router = express.Router()
 
 // CREATE A PRODUCT
-router.post('/', verifyAdmin, uploadCloud.array('picture'), createAProduct)
+router.post('/', verifyAdmin, uploadCloud.array('productImgs'), createAProduct)
 
 // GET ALL PRODUCTS
 router.get('/', getAllProduct)

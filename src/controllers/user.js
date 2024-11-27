@@ -115,7 +115,7 @@ export const deleteUsers = async (req, res, next) => {
 }
 
 export const addProductToUser = async (req, res) => {
-    const { productId, color, size, quantity } = req.body
+    const { productId, quantity } = req.body
     const { _id: userId } = req.user
 
     try {
@@ -127,9 +127,7 @@ export const addProductToUser = async (req, res) => {
         }
 
         // Tìm kiếm sản phẩm trong giỏ hàng của người dùng
-        const productIndex = user.products.findIndex(
-            p => p.productId._id.toString() === productId.toString() && p.size === size && p.color === color
-        )
+        const productIndex = user.products.findIndex(p => p.productId._id.toString() === productId.toString())
 
         if (productIndex === -1) {
             // Nếu sản phẩm chưa có trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
@@ -138,7 +136,7 @@ export const addProductToUser = async (req, res) => {
                 return res.status(404).json({ message: 'Sản phẩm không tồn tại!' })
             }
             const sumPrice = quantity * product.price
-            user.products.push({ productId: product._id, quantity, size, color, sumPrice })
+            user.products.push({ productId: product._id, quantity, sumPrice })
         } else {
             // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng lên 1
             user.products[productIndex].quantity += quantity
@@ -156,7 +154,18 @@ export const addProductToUser = async (req, res) => {
         res.status(500).json({ message: error })
     }
 }
-
+export const getProductFromCart = async (req, res) => {
+    const { _id: userId } = req.user
+    try {
+        const user = await User.findById(userId).populate('products.productId')
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' })
+        }
+        responseHandler.success(res, user.products)
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
 export const removeQuantityProductIdFromCart = async (req, res) => {
     const { _id: userId } = req.user
     const { productId } = req.body

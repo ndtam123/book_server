@@ -4,6 +4,7 @@ import {
     deleteUsers,
     getAUser,
     getAllUsers,
+    getProductFromCart,
     removeAllProducts,
     removeMutiplesProductId,
     removeProductIdFromCart,
@@ -18,7 +19,8 @@ const router = express.Router()
 
 // Get All Users
 router.get('/', verifyAdmin, getAllUsers)
-
+//Get Product from cart
+router.get('/cart', verifyUser, getProductFromCart)
 // Get A User
 router.get('/find/user', verifyUser, getAUser)
 

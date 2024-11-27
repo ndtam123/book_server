@@ -20,14 +20,6 @@ const ProductItem = new Schema(
             type: Number,
             required: true
         },
-        size: {
-            type: String,
-            required: true
-        },
-        color: {
-            type: String,
-            required: true
-        },
         sumPrice: {
             type: Number
         }
@@ -70,7 +62,7 @@ const UserSchema = new Schema(
             type: Boolean,
             default: false
         },
-        voucher: [Voucher], 
+        voucher: [Voucher],
         ordersCount: {
             type: [String]
         },
@@ -83,7 +75,7 @@ const UserSchema = new Schema(
             default: 0
         },
         products: [ProductItem],
-        totalItems: { type: Number, default: 0 },
+        totalItems: { type: Number, default: 0 }
         // token: {
         //     type: String
         // }
