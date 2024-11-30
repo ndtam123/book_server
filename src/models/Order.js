@@ -8,8 +8,6 @@ const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
-    color: { type: String, required: true },
-    size: { type: String, required: true },
     sumPrice: { type: Number, required: true }
 })
 
@@ -21,11 +19,11 @@ const OrderSchema = new Schema(
         products: { type: [productSchema], required: true },
         totalPrice: { type: Number, required: true },
         paymentMethod: { type: String },
-        location: {
-            selectedProvinces: { type: String },
-            selectedDistrict: { type: String },
-            selectedWard: { type: String }
-        },
+        // location: {
+        //     selectedProvinces: { type: String },
+        //     selectedDistrict: { type: String },
+        //     selectedWard: { type: String }
+        // },
         shippingAddress: {
             fullName: { type: String, required: true },
             address: { type: String, required: true },

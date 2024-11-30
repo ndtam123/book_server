@@ -28,7 +28,8 @@ export const isProductAvailable = async productId => {
 
 export const updateProductQuantities = async products => {
     const updateOperations = products.map(async productId => {
-        const product = await Product.findById(productId.productId._id)
+        const product = await Product.findById(productId.productId)
+
         if (!product || product.quantity <= 0) {
             throw new Error('Sản phẩm không có sẵn trong cửa hàng')
         }
