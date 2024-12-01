@@ -37,10 +37,10 @@ router.delete('/', verifyAdmin, deleteUsers)
 router.post('/add', verifyUser, validateAddProduct, addProductToUser)
 
 // Remove quantity of productId to products field
-router.delete('/remove-quantity', verifyUser, removeQuantityProductIdFromCart)
+router.patch('/remove-quantity', verifyUser, removeQuantityProductIdFromCart)
 
 // Remove productId from products field
-router.delete('/remove', verifyUser, removeProductIdFromCart)
+router.patch('/remove', verifyUser, removeProductIdFromCart)
 
 // Remove mutiple productId from products
 router.patch('/remove-mutiple', verifyUser, removeMutiplesProductId)

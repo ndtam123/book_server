@@ -178,7 +178,9 @@ export const removeQuantityProductIdFromCart = async (req, res) => {
 
         // Tìm vị trí của sản phẩm có _id là productId trong mảng products của người dùng
         const productIndex = user.products.findIndex(productItem => productItem.productId._id.toString() === productId)
+
         const product = user.products[productIndex]
+
         if (!product) return res.status(404).json({ message: 'Không tìm thấy sản phẩm trong giỏ hàng' })
 
         // Nếu tìm thấy sản phẩm, xóa nó ra khỏi mảng products của người dùng
