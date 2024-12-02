@@ -5,9 +5,9 @@ const { Schema } = mongoose
 
 const productSchema = new mongoose.Schema({
     productId: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
-    name: { type: String, required: true },
+    // name: { type: String, required: true },
     quantity: { type: Number, required: true },
-    price: { type: Number, required: true },
+    // price: { type: Number, required: true },
     sumPrice: { type: Number, required: true }
 })
 
