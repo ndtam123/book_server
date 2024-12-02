@@ -198,7 +198,28 @@ export const removeQuantityProductIdFromCart = async (req, res) => {
         responseHandler.error(res, error)
     }
 }
+export const addQuantityProductIdFromCart = async (req, res) => {
+    const { _id: userId } = req.user
+    const { productId } = req.body
 
+    try {
+        const user = await User.findById(userId).populate('products.productId')
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' })
+        }
+        // Tìm vị trí của sản phẩm có _id là productId trong mảng products của người
+        const productIndex = user.products.findIndex(productItem => productItem.productId._id.toString() === productId)
+        const product = user.products[productIndex]
+        if (!product) return res.status(404).json({ message: 'Không tìm thấy sản phẩm trong giỏ hàng' })
+        // Nếu tìm thấy sản phẩm, tăng số lượng lên 1
+        product.quantity++
+        user.totalItems++
+        await user.save()
+        return responseHandler.success(res, user)
+    } catch (error) {
+        responseHandler.error(res, error)
+    }
+}
 export const removeProductIdFromCart = async (req, res) => {
     const { _id: userId } = req.user
     const { productId } = req.body

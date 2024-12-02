@@ -1,6 +1,7 @@
 import express from 'express'
 import {
     addProductToUser,
+    addQuantityProductIdFromCart,
     deleteUsers,
     getAUser,
     getAllUsers,
@@ -38,6 +39,9 @@ router.post('/add', verifyUser, validateAddProduct, addProductToUser)
 
 // Remove quantity of productId to products field
 router.patch('/remove-quantity', verifyUser, removeQuantityProductIdFromCart)
+
+//increament quantity of productId to products field
+router.patch('/increase-quantity', verifyUser, addQuantityProductIdFromCart)
 
 // Remove productId from products field
 router.patch('/remove', verifyUser, removeProductIdFromCart)
