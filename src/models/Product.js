@@ -33,6 +33,11 @@ const ProductSchema = new Schema(
         sold: {
             type: Number,
             default: 0
+        },
+        monthlyRevenue: {
+            type: Map,
+            of: Number,
+            default: {}
         }
     },
     { timestamps: true }

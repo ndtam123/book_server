@@ -134,6 +134,7 @@ export const updateOrder = async (req, res) => {
                 existProduct.monthlyRevenue.set(monthYearKey, revenue)
                 await existProduct.save()
             }
+            console.log('Cập nhật doanh thu hàng tháng thành công')
         }
         const updateOrder = await Order.findOneAndUpdate({ orderCode }, { status, isPaid }, { new: true })
         res.status(200).json(updateOrder)

@@ -27,7 +27,7 @@ export const getAProduct = async (req, res) => {
 }
 
 export const getAllProduct = async (req, res) => {
-    const { page, limit, category, brand, sizes, price } = req.query
+    const { page, limit, category, price } = req.query
     const options = {
         limit: parseInt(limit, 10) || 10,
         page: parseInt(page, 10) || 1,
@@ -54,7 +54,7 @@ export const getAllProduct = async (req, res) => {
                         const lowerBound = parseInt(price.substring(2))
                         return { price: { $gt: lowerBound } }
                     }
-                })())
+                }))
         }
     }
     try {
