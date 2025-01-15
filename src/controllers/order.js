@@ -132,6 +132,7 @@ export const updateOrder = async (req, res) => {
                 const monthYearKey = `${month}-${year}`
                 const revenue = calculateProductRevenue(existProduct.price, product.quantity)
                 existProduct.monthlyRevenue.set(monthYearKey, revenue)
+                existProduct.quantity -= product.quantity
                 await existProduct.save()
             }
             console.log('Cập nhật doanh thu hàng tháng thành công')
@@ -192,6 +193,11 @@ export const cancelOrderByUser = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({ message: 'Người dùng không tồn tại!' })
+        }
+        for (const product of order.products) {
+            const existProduct = await Product.findById(product.productId)
+            existProduct.quantity += product.quantity // Tăng lại số lượng sản phẩm trong kho
+            await existProduct.save()
         }
         order.status = 'cancel'
         await order.save()
