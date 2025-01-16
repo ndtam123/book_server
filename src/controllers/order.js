@@ -83,6 +83,13 @@ export const createOrder = async (req, res) => {
             existingUser.ordersCount.push(orderCode)
             await existingUser.save()
         }
+        for (const product of products) {
+            const existProduct = await Product.findById(product.productId)
+            if (existProduct) {
+                existProduct.quantity -= product.quantity
+                await existProduct.save()
+            }
+        }
 
         responseHandler.success(res, newOrder)
     } catch (error) {
@@ -135,7 +142,6 @@ export const updateOrder = async (req, res) => {
                 existProduct.quantity -= product.quantity
                 await existProduct.save()
             }
-            console.log('Cập nhật doanh thu hàng tháng thành công')
         }
         const updateOrder = await Order.findOneAndUpdate({ orderCode }, { status, isPaid }, { new: true })
         res.status(200).json(updateOrder)
