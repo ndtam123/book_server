@@ -86,7 +86,7 @@ export const createOrder = async (req, res) => {
         for (const product of products) {
             const existProduct = await Product.findById(product.productId)
             if (existProduct) {
-                existProduct.quantity -= product.quantity
+                existProduct.countInStock -= product.countInStock
                 await existProduct.save()
             }
         }
@@ -139,7 +139,7 @@ export const updateOrder = async (req, res) => {
                 const monthYearKey = `${month}-${year}`
                 const revenue = calculateProductRevenue(existProduct.price, product.quantity)
                 existProduct.monthlyRevenue.set(monthYearKey, revenue)
-                existProduct.quantity -= product.quantity
+                existProduct.countInStock -= product.countInStock
                 await existProduct.save()
             }
         }
