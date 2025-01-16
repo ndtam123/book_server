@@ -132,7 +132,7 @@ export const updateOrder = async (req, res) => {
                 const monthYearKey = `${month}-${year}`
                 const revenue = calculateProductRevenue(existProduct.price, product.quantity)
                 existProduct.monthlyRevenue.set(monthYearKey, revenue)
-                existProduct.countInStock -= product.countInStock
+                existProduct.quantity -= product.quantity
                 await existProduct.save()
             }
         }
