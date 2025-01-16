@@ -115,7 +115,6 @@ export const createOrder = async (req, res) => {
         // Tạo đơn hàng mới
         const newOrder = new Order({
             userId: req.user._id, // ID người dùng
-            orderCode,
             products,
             totalPrice,
             shippingAddress
