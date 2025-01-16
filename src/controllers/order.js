@@ -53,77 +53,40 @@ import { calculateProductRevenue, generateUniqueOrderCode, updateProductQuantiti
 //     }
 // }
 
-// export const createOrder = async (req, res) => {
-//     try {
-//         const { products } = req.body
-//         const { _id: userId } = req.user
-
-//         const orderCode = await generateUniqueOrderCode()
-
-//         await updateProductQuantities(products)
-
-//         if (voucherCode) {
-//             const voucher = await Voucher.findOne({ voucherCode })
-//             if (voucher.used === voucher.total) {
-//                 res.status(400).json('Voucher đã được sử dụng hết')
-//             } else {
-//                 await Voucher.findOneAndUpdate({ voucherCode }, { $inc: { used: 1 } })
-//             }
-//         }
-
-//         const newOrder = Order({
-//             ...req.body,
-//             orderCode,
-//             userId
-//         })
-//         await newOrder.save()
-
-//         const existingUser = await User.findById(userId)
-//         if (existingUser) {
-//             existingUser.ordersCount.push(orderCode)
-//             await existingUser.save()
-//         }
-
-//         responseHandler.success(res, newOrder)
-//     } catch (error) {
-//         res.status(500).json({ message: error.message })
-//     }
-// }
-
 export const createOrder = async (req, res) => {
     try {
-        const { products, shippingAddress } = req.body // Lấy thông tin sản phẩm và địa chỉ giao hàng từ yêu cầu
-        const orderCode = generateUniqueOrderCode() // Hàm tạo mã đơn hàng duy nhất
-        let totalPrice = 0
+        const { products } = req.body
+        const { _id: userId } = req.user
 
-        // Cập nhật số lượng sản phẩm trong kho
-        for (const product of products) {
-            const productInStock = await Product.findById(product.productId)
-            if (!productInStock || productInStock.countInStock < product.quantity) {
-                return responseHandler.badRequest(res, `Sản phẩm ${productInStock.name} không đủ trong kho.`)
-            }
+        const orderCode = await generateUniqueOrderCode()
 
-            // Tính tổng giá trị đơn hàng
-            totalPrice += productInStock.price * product.quantity
+        await updateProductQuantities(products)
 
-            // Cập nhật số lượng sản phẩm trong kho
-            await Product.findByIdAndUpdate(product.productId, {
-                $inc: { countInStock: -product.quantity } // Giảm số lượng sản phẩm trong kho
-            })
+        // if (voucherCode) {
+        //     const voucher = await Voucher.findOne({ voucherCode })
+        //     if (voucher.used === voucher.total) {
+        //         res.status(400).json('Voucher đã được sử dụng hết')
+        //     } else {
+        //         await Voucher.findOneAndUpdate({ voucherCode }, { $inc: { used: 1 } })
+        //     }
+        // }
+
+        const newOrder = Order({
+            ...req.body,
+            orderCode,
+            userId
+        })
+        await newOrder.save()
+
+        const existingUser = await User.findById(userId)
+        if (existingUser) {
+            existingUser.ordersCount.push(orderCode)
+            await existingUser.save()
         }
 
-        // Tạo đơn hàng mới
-        const newOrder = new Order({
-            userId: req.user._id, // ID người dùng
-            products,
-            totalPrice,
-            shippingAddress
-        })
-
-        await newOrder.save() // Lưu đơn hàng vào cơ sở dữ liệu
-        responseHandler.created(res, newOrder) // Phản hồi thành công
+        responseHandler.success(res, newOrder)
     } catch (error) {
-        responseHandler.error(res, error) // Xử lý lỗi
+        res.status(500).json({ message: error.message })
     }
 }
 
