@@ -194,7 +194,7 @@ export const cancelOrderByUser = async (req, res) => {
             return res.status(404).json({ message: 'Người dùng không tồn tại!' })
         }
         for (const product of order.products) {
-            const existProduct = await Product.findById(product.productId)
+            const existProduct = await Product.findById(product.productId._id)
             existProduct.quantity += product.quantity // Tăng lại số lượng sản phẩm trong kho
             await existProduct.save()
         }
