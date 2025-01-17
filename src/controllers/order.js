@@ -83,7 +83,10 @@ export const createOrder = async (req, res) => {
             existingUser.ordersCount.push(orderCode)
             await existingUser.save()
         }
-
+        for (const product of products) {
+            const existProduct = await Product.findById(product.productId._id)
+            existProduct.quantity -= product.quantity
+        }
         responseHandler.success(res, newOrder)
     } catch (error) {
         res.status(500).json({ message: error.message })
